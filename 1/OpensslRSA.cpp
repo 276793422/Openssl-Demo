@@ -42,6 +42,36 @@ RSA* RSA_MakeKey(int nbits, unsigned int number)
 	return rsa;
 }
 
+RSA *RSA_LoadPublicKey(char *szKey)
+{
+	BIO *pBio = BIO_new_mem_buf(szKey, -1);
+	if (pBio == NULL)
+	{
+		return NULL;
+	}
+	RSA *pRsa = PEM_read_bio_RSAPublicKey(pBio, NULL, NULL, NULL);
+	if (pRsa == NULL)
+	{
+		return NULL;
+	}
+	return pRsa;
+}
+
+RSA *RSA_LoadPrivateKey(char *szKey)
+{
+	BIO *pBio = BIO_new_mem_buf(szKey, -1);
+	if (pBio == NULL)
+	{
+		return NULL;
+	}
+	RSA *pRsa = PEM_read_bio_RSAPrivateKey(pBio, NULL, NULL, NULL);
+	if (pRsa == NULL)
+	{
+		return NULL;
+	}
+	return pRsa;
+}
+
 void RSA_SavePublicKey(RSA *pRsa, const char *szPublicKey)
 {
 	BIO *pBio = BIO_new_file(szPublicKey, "wb");
